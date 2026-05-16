@@ -41,7 +41,7 @@ CREATE TABLE Peliculas (
     IdPelicula INT NOT NULL IDENTITY(1,1),    
     Titulo VARCHAR(100) NOT NULL,
     Descripcion VARCHAR(250) NOT NULL,
-    DuracionMinutos INT NOT NULL,
+    DuracionMinutos INT NOT NULL CHECK(DuracionMinutos > 0),
     FechaEstreno DATE NOT NULL,
 	IdDirector INT NOT NULL,
     IdClasificacion INT NOT NULL,
