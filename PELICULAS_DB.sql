@@ -119,3 +119,51 @@ CREATE TABLE Usuarios (
     CONSTRAINT CHK_Resenias_Calificacion CHECK (Calificacion BETWEEN 1 AND 10)
 );
 GO
+   --ACTORES
+   CREATE TABLE Actores(
+   IdActor INT NOT NULL IDENTITY(1,1),
+   Nombre VARCHAR(100) NOT NULL,
+   Apellido VARCHAR(100) NOT NULL,
+   Nacionalidad VARCHAR(100) NOT NULL,
+
+   CONSTRAINT PK_Actores PRIMARY KEY (IdActor)
+   );
+   GO
+
+   --PELICULASXACTORES
+   CREATE TABLE PeliculasxActores(
+   Id INT NOT NULL IDENTITY(1,1),
+   IdPelicula INT NOT NULL,
+   IdActor INT NOT NULL,
+    
+   CONSTRAINT PK_PeliculasxActores PRIMARY KEY (Id)
+
+   );
+   GO
+
+   -- VISUALIZACIONES
+   CREATE TABLE Visualizaciones (
+    IdVisualizacion INT NOT NULL IDENTITY(1,1),
+    IdUsuario INT NOT NULL,
+    IdPelicula INT NOT NULL,
+    FechaVisualizacion DATE NOT NULL,
+    
+    CONSTRAINT PK_Visualizaciones PRIMARY KEY (IdVisualizacion)
+   );
+   GO
+
+   -- WATCHLIST
+  CREATE TABLE Watchlist (
+    IdWatchlist INT NOT NULL IDENTITY(1,1),
+    IdUsuario INT NOT NULL,
+    IdPelicula INT NOT NULL,
+    FechaAgregado DATE NOT NULL,
+    Activo BIT NOT NULL DEFAULT 1,
+    
+    CONSTRAINT PK_Watchlist PRIMARY KEY (IdWatchlist)
+  );
+  GO
+
+
+
+
