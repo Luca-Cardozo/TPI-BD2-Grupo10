@@ -86,7 +86,8 @@ CREATE TABLE Usuarios (
     Descripcion VARCHAR(50) NOT NULL,
     PrecioMensual MONEY NOT NULL,
 
-    CONSTRAINT PK_Suscripciones PRIMARY KEY (IdSuscripcion)
+    CONSTRAINT PK_Suscripciones PRIMARY KEY (IdSuscripcion),
+	CONSTRAINT CHK_Suscripciones_Precio CHECK (PrecioMensual > 0)
     );
 
     GO
@@ -95,7 +96,7 @@ CREATE TABLE Usuarios (
     Id INT NOT NULL IDENTITY(1,1),
     IdUsuario INT NOT NULL,
     IdSuscripcion INT NOT NULL,
-    FechaAlta DATE NOT NULL,
+    FechaAlta DATE NOT NULL DEFAULT GETDATE(),
     FechaBaja DATE NULL,
     Activo BIT NOT NULL DEFAULT 1,
 
@@ -146,7 +147,7 @@ GO
     IdVisualizacion INT NOT NULL IDENTITY(1,1),
     IdUsuario INT NOT NULL,
     IdPelicula INT NOT NULL,
-    FechaVisualizacion DATE NOT NULL,
+    FechaVisualizacion DATE NOT NULL DEFAULT GETDATE(),
     
     CONSTRAINT PK_Visualizaciones PRIMARY KEY (IdVisualizacion)
    );
@@ -157,12 +158,69 @@ GO
     IdWatchlist INT NOT NULL IDENTITY(1,1),
     IdUsuario INT NOT NULL,
     IdPelicula INT NOT NULL,
-    FechaAgregado DATE NOT NULL,
+    FechaAgregado DATE NOT NULL DEFAULT GETDATE(),
     Activo BIT NOT NULL DEFAULT 1,
     
     CONSTRAINT PK_Watchlist PRIMARY KEY (IdWatchlist)
   );
   GO
+
+-- AGREGADO DE FKs
+ALTER TABLE Peliculas
+ADD CONSTRAINT FK_Peliculas_Director
+FOREIGN KEY (IdDirector) REFERENCES Directores(IdDirector);
+ 
+ALTER TABLE Peliculas
+ADD CONSTRAINT FK_Peliculas_Clasificacion
+FOREIGN KEY (IdClasificacion) REFERENCES Clasificaciones(IdClasificacion);
+ 
+ALTER TABLE PeliculasxGeneros
+ADD CONSTRAINT FK_PxG_Pelicula
+FOREIGN KEY (IdPelicula) REFERENCES Peliculas(IdPelicula);
+ 
+ALTER TABLE PeliculasxGeneros
+ADD CONSTRAINT FK_PxG_Genero
+FOREIGN KEY (IdGenero) REFERENCES Generos(IdGenero);
+
+ALTER TABLE UsuariosxSuscripciones
+ADD CONSTRAINT FK_UxS_Usuario
+FOREIGN KEY (IdUsuario) REFERENCES Usuarios(IdUsuario);
+ 
+ALTER TABLE UsuariosxSuscripciones
+ADD CONSTRAINT FK_UxS_Suscripcion
+FOREIGN KEY (IdSuscripcion) REFERENCES Suscripciones(IdSuscripcion);
+
+ALTER TABLE PeliculasxActores
+ADD CONSTRAINT FK_PxA_Pelicula
+FOREIGN KEY (IdPelicula) REFERENCES Peliculas(IdPelicula);
+ 
+ALTER TABLE PeliculasxActores
+ADD CONSTRAINT FK_PxA_Actor
+FOREIGN KEY (IdActor) REFERENCES Actores(IdActor);
+ 
+ALTER TABLE Resenias
+ADD CONSTRAINT FK_Resenias_Usuario
+FOREIGN KEY (IdUsuario) REFERENCES Usuarios(IdUsuario);
+ 
+ALTER TABLE Resenias
+ADD CONSTRAINT FK_Resenias_Pelicula
+FOREIGN KEY (IdPelicula) REFERENCES Peliculas(IdPelicula);
+ 
+ALTER TABLE Visualizaciones
+ADD CONSTRAINT FK_Visualizaciones_Usuario
+FOREIGN KEY (IdUsuario) REFERENCES Usuarios(IdUsuario);
+ 
+ALTER TABLE Visualizaciones
+ADD CONSTRAINT FK_Visualizaciones_Pelicula
+FOREIGN KEY (IdPelicula) REFERENCES Peliculas(IdPelicula);
+ 
+ALTER TABLE Watchlist
+ADD CONSTRAINT FK_Watchlist_Usuario
+FOREIGN KEY (IdUsuario) REFERENCES Usuarios(IdUsuario);
+ 
+ALTER TABLE Watchlist
+ADD CONSTRAINT FK_Watchlist_Pelicula
+FOREIGN KEY (IdPelicula) REFERENCES Peliculas(IdPelicula);
 
 
 
