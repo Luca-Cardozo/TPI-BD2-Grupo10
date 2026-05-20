@@ -48,7 +48,7 @@ CREATE TABLE Peliculas (
 	URLImagen VARCHAR(300) NOT NULL,
 	URLTrailer VARCHAR(300) NOT NULL,
     ContadorVisualizaciones INT NOT NULL DEFAULT 0,
-    PromedioCalificacion DECIMAL(3,2) NOT NULL DEFAULT 0,
+    PromedioCalificacion DECIMAL(4,2) NOT NULL DEFAULT 0,
     Activo BIT NOT NULL DEFAULT 1,
     CONSTRAINT PK_Peliculas PRIMARY KEY (IdPelicula)
 );
