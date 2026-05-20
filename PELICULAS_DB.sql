@@ -87,7 +87,7 @@ CREATE TABLE Usuarios (
     PrecioMensual MONEY NOT NULL,
 
     CONSTRAINT PK_Suscripciones PRIMARY KEY (IdSuscripcion),
-	CONSTRAINT CHK_Suscripciones_Precio CHECK (PrecioMensual > 0)
+	CONSTRAINT CHK_Suscripciones_Precio CHECK (PrecioMensual >= 0)
     );
 
     GO
