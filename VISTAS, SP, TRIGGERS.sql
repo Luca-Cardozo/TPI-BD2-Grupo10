@@ -112,3 +112,147 @@ BEGIN
 	END
 	INSERT INTO Watchlist (IdUsuario, IdPelicula, Activo) VALUES (@IdUsuario, @IdPelicula, 1)
 END
+
+--VISTA
+/*VW_RankingMejoresPuntuadas (se muestra las 10 películas con mejor calificación)*/
+USE Peliculas_DB;
+GO
+CREATE VIEW VW_RankingMejoresPuntuadas
+AS
+SELECT TOP 10
+    p.IdPelicula,
+    p.Titulo,
+    p.PromedioCalificacion
+FROM Peliculas p
+WHERE p.Activo = 1
+ORDER BY p.PromedioCalificacion DESC;
+GO
+
+--PRUEBA DE VISTA.
+SELECT *
+FROM VW_RankingMejoresPuntuadas;
+-- PROCEDIMIENTOS ALMACENADOS
+/*SP_RegistrarResenia (INSERT de una nueva reseña de una determinada película de un determinado usuario, la cual modfica existente o carga nueva)*/
+
+CREATE PROCEDURE SP_RegistrarResenia
+    @IdUsuario INT,
+    @IdPelicula INT,
+    @Comentario VARCHAR(1000),
+    @Calificacion INT
+AS
+BEGIN
+    
+    IF NOT EXISTS (
+        SELECT 1
+        FROM UsuariosxSuscripciones
+        WHERE IdUsuario = @IdUsuario
+          AND Activo = 1
+          AND FechaBaja IS NULL
+    )
+    BEGIN
+        RAISERROR('El usuario no tiene una suscripción activa.', 16, 1);
+        RETURN;
+    END
+
+    IF EXISTS (
+        SELECT 1
+        FROM Resenias
+        WHERE IdUsuario = @IdUsuario
+          AND IdPelicula = @IdPelicula
+    )
+    BEGIN
+        UPDATE Resenias
+        SET Comentario = @Comentario,
+            Calificacion = @Calificacion,
+            Fecha = GETDATE()
+        WHERE IdUsuario = @IdUsuario
+          AND IdPelicula = @IdPelicula;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO Resenias (IdUsuario, IdPelicula, Comentario, Calificacion, Fecha)
+        VALUES (@IdUsuario, @IdPelicula, @Comentario, @Calificacion, GETDATE());
+    END
+END;
+GO
+
+/*SP_RegistrarVisualizacion (INSERT de una nueva visualización de una determinada película de un determinado usuario, se valida que el usuario posea suscripción Premium activa para poder realizar la inserción)
+*/
+CREATE PROCEDURE SP_RegistrarVisualizacion
+    @IdUsuario INT,
+    @IdPelicula INT
+AS
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM UsuariosxSuscripciones uxs
+        INNER JOIN Suscripciones s 
+            ON uxs.IdSuscripcion = s.IdSuscripcion
+        WHERE uxs.IdUsuario = @IdUsuario
+          AND uxs.Activo = 1
+          AND uxs.FechaBaja IS NULL
+          AND s.Descripcion = 'Premium'
+    )
+    BEGIN
+        RAISERROR('El usuario no posee una suscripción Premium activa.', 16, 1);
+        RETURN;
+    END
+
+    INSERT INTO Visualizaciones (IdUsuario, IdPelicula, FechaVisualizacion)
+    VALUES (@IdUsuario, @IdPelicula, GETDATE());
+END;
+GO
+/*--PRUEBA DE SP
+EXEC SP_RegistrarResenia
+    @IdUsuario = 14,
+    @IdPelicula = 1,
+    @Comentario = 'Excelente película',
+    @Calificacion = 9;
+SELECT *
+FROM UsuariosxSuscripciones
+WHERE Activo = 0
+;
+
+ SELECT *
+FROM Resenias
+WHERE IdUsuario = 1
+AND IdPelicula = 1;
+EXEC SP_RegistrarResenia
+    @IdUsuario = 15,
+    @IdPelicula = 1,
+    @Comentario = 'Muy mala',
+    @Calificacion = 1;
+    
+   UPDATE UsuariosxSuscripciones
+SET Activo = 0,
+    FechaBaja = GETDATE()
+WHERE IdUsuario = 15
+AND Activo = 1; 
+    
+    
+    */
+
+    --TRIGGER
+/*TR_ActualizarPromedioCalificacion (cada vez que un usuario deja una reseña y califica una película, 
+se actualiza el promedio de puntuación de dicha película)*/
+
+    CREATE TRIGGER TR_ActualizarPromedioCalificacion
+ON Resenias
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    UPDATE p
+    SET p.PromedioCalificacion = ISNULL((
+        SELECT CAST(ROUND(AVG(CAST(r.Calificacion AS FLOAT)), 2) AS DECIMAL(4,2))
+        FROM Resenias r
+        WHERE r.IdPelicula = p.IdPelicula
+    ), 0)
+    FROM Peliculas p
+    WHERE p.IdPelicula IN (
+        SELECT DISTINCT IdPelicula
+        FROM inserted
+    );
+END;
+GO
+
+
