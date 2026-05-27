@@ -142,17 +142,22 @@ CREATE PROCEDURE SP_RegistrarResenia
 AS
 BEGIN
     
+	BEGIN TRY
+
     IF NOT EXISTS (
         SELECT 1
         FROM UsuariosxSuscripciones
         WHERE IdUsuario = @IdUsuario
           AND Activo = 1
           AND FechaBaja IS NULL
+		  AND IdSuscripcion IN (2,3)
     )
     BEGIN
-        RAISERROR('El usuario no tiene una suscripción activa.', 16, 1);
+        RAISERROR('El usuario no tiene una suscripción activa para realizar reseñas.', 16, 1);
         RETURN;
     END
+
+	BEGIN TRANSACTION
 
     IF EXISTS (
         SELECT 1
@@ -173,6 +178,17 @@ BEGIN
         INSERT INTO Resenias (IdUsuario, IdPelicula, Comentario, Calificacion, Fecha)
         VALUES (@IdUsuario, @IdPelicula, @Comentario, @Calificacion, GETDATE());
     END
+
+	COMMIT TRANSACTION
+	END TRY
+
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRANSACTION;
+		RAISERROR('Ocurrió un error, no se pudo registrar la reseña', 16, 1);
+		RETURN;
+	END CATCH
+
 END;
 GO
 
@@ -183,23 +199,37 @@ CREATE PROCEDURE SP_RegistrarVisualizacion
     @IdPelicula INT
 AS
 BEGIN
-    IF NOT EXISTS (
+    
+	BEGIN TRY
+	
+	IF NOT EXISTS (
         SELECT 1
         FROM UsuariosxSuscripciones uxs
-        INNER JOIN Suscripciones s 
-            ON uxs.IdSuscripcion = s.IdSuscripcion
         WHERE uxs.IdUsuario = @IdUsuario
           AND uxs.Activo = 1
           AND uxs.FechaBaja IS NULL
-          AND s.Descripcion = 'Premium'
+          AND uxs.IdSuscripcion = 3
     )
     BEGIN
         RAISERROR('El usuario no posee una suscripción Premium activa.', 16, 1);
         RETURN;
     END
 
+	BEGIN TRANSACTION
+
     INSERT INTO Visualizaciones (IdUsuario, IdPelicula, FechaVisualizacion)
     VALUES (@IdUsuario, @IdPelicula, GETDATE());
+
+	COMMIT TRANSACTION;
+	
+	END TRY
+
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRANSACTION;
+		RAISERROR('Ocurrió un error, no se pudo registrar la visualización', 16, 1);
+		RETURN;
+	END CATCH
 END;
 GO
 /*--PRUEBA DE SP
@@ -236,7 +266,7 @@ AND Activo = 1;
 /*TR_ActualizarPromedioCalificacion (cada vez que un usuario deja una reseña y califica una película, 
 se actualiza el promedio de puntuación de dicha película)*/
 
-    CREATE TRIGGER TR_ActualizarPromedioCalificacion
+CREATE TRIGGER TR_ActualizarPromedioCalificacion
 ON Resenias
 AFTER INSERT, UPDATE
 AS
