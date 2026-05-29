@@ -16,7 +16,7 @@ LEFT JOIN Visualizaciones V ON V.IdUsuario = U.IdUsuario
 WHERE US.Activo = 1
 GROUP BY U.Nombre, U.Apellido, U.DNI, U.Email, S.Descripcion
 
---Se utiliza la vistapara tareas administrativas. La misma muestra el historial de suscripciones de cada usuario con fechas de alta y de baja, incluyendo el tipo de membresía y la vigencia de la misma.
+--Se utiliza la vista para tareas administrativas. La misma muestra el historial de suscripciones de cada usuario con fechas de alta y de baja, incluyendo el tipo de membresía y la vigencia de la misma.
 CREATE VIEW VW_HistorialSuscripciones
 AS
 SELECT 
@@ -390,8 +390,8 @@ AS
 BEGIN
 
     DECLARE @IdPelicula INT;
-    DECLARE @EstadoNuevo INT;
-    DECLARE @EstadoViejo INT;
+    DECLARE @EstadoNuevo BIT;
+    DECLARE @EstadoViejo BIT;
 
     SELECT @IdPelicula = IdPelicula, @EstadoNuevo = Activo FROM inserted;
     SELECT @EstadoViejo = Activo FROM deleted;
