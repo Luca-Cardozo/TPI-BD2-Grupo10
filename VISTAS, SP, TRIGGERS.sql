@@ -16,8 +16,67 @@ LEFT JOIN Visualizaciones V ON V.IdUsuario = U.IdUsuario
 WHERE US.Activo = 1
 GROUP BY U.Nombre, U.Apellido, U.DNI, U.Email, S.Descripcion
 
+--Se utiliza la vistapara tareas administrativas. La misma muestra el historial de suscripciones de cada usuario con fechas de alta y de baja, incluyendo el tipo de membresía y la vigencia de la misma.
+CREATE VIEW VW_HistorialSuscripciones
+AS
+SELECT 
+     U.IdUsuario,
+     U.Nombre,
+     U.Apellido,
+     U.Email,
+     S.Descripcion AS TipoMembresia,
+    UXS.FechaAlta,
+    UXS.FechaBaja,
+    UXS.Activo AS EsSuscripcionActiva,
+    CASE 
+        WHEN UXS.Activo = 1 THEN 'Vigente'
+        ELSE 'Finalizada'
+    END AS EstadoVigencia
+FROM UsuariosxSuscripciones UXS
+INNER JOIN Usuarios U ON UXS.IdUsuario = U.IdUsuario
+INNER JOIN Suscripciones S ON UXS.IdSuscripcion = S.IdSuscripcion;
+GO
 
 -- PROCEDIMIENTOS ALMACENADOS
+
+-- Inserta el nuevo usuario en la tabla  Usuarios e inserta la suscripción elegida en la tabla UsuariosxSuscripciones
+
+CREATE PROCEDURE SP_RegistrarUsuario
+    @Nombre VARCHAR(100),
+    @Apellido VARCHAR(100),
+    @DNI VARCHAR(10),
+    @Email VARCHAR(100),
+    @Password VARCHAR(100),
+    @Telefono VARCHAR(25) = NULL,
+    @IdSuscripcion INT
+AS
+BEGIN
+    BEGIN TRANSACTION;
+    BEGIN TRY
+  
+        INSERT INTO Usuarios (Nombre, Apellido, DNI, Email, Password, Telefono, EsAdmin)
+        VALUES (@Nombre, @Apellido, @DNI, @Email, @Password, @Telefono, 0);
+       
+        DECLARE @NuevoIdUsuario INT;
+        
+        SELECT @NuevoIdUsuario = IdUsuario 
+        FROM Usuarios 
+        WHERE DNI = @DNI;
+       
+        INSERT INTO UsuariosxSuscripciones (IdUsuario, IdSuscripcion, FechaAlta, FechaBaja, Activo)
+        VALUES (@NuevoIdUsuario, @IdSuscripcion, GETDATE(), NULL, 1);
+        
+        COMMIT TRANSACTION;
+        PRINT 'Usuario y suscripción registrados correctamente.';
+        
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END;
+GO
+
 
 -- Se realiza un SELECT de películas filtrando por título, género, director, clasificación, actor, año de estreno)
 
@@ -86,7 +145,10 @@ BEGIN
 		RETURN;
 
 	END CATCH
-END
+END;
+GO
+
+
 
 -- TRIGGERS
 
@@ -112,6 +174,40 @@ BEGIN
 	END
 	INSERT INTO Watchlist (IdUsuario, IdPelicula, Activo) VALUES (@IdUsuario, @IdPelicula, 1)
 END
+
+--cada vez que un usuario reproduce una película, se suma 1 al contador de visualizaciones de dicha película
+
+CREATE TRIGGER TR_ActualizarContadorVisualizaciones
+ON Visualizaciones
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @IdPelicula INT;
+    SELECT @IdPelicula = IdPelicula FROM inserted
+    UPDATE Peliculas
+    SET ContadorVisualizaciones = ContadorVisualizaciones + 1
+    WHERE IdPelicula = @IdPelicula;
+END;
+GO
+
+--En lugar de una baja física se hace una baja lógica)
+CREATE TRIGGER TR_BajaLogicaWatchlist
+ON Watchlist
+INSTEAD OF DELETE
+AS
+BEGIN
+   
+    DECLARE @IdUsuario INT;
+    DECLARE @IdPelicula INT;
+
+    SELECT @IdUsuario = IdUsuario, @IdPelicula = IdPelicula FROM deleted;
+
+    UPDATE Watchlist
+    SET Activo = 0
+    WHERE IdUsuario = @IdUsuario AND IdPelicula = @IdPelicula;
+END;
+GO
+
 
 --VISTA
 /*VW_RankingMejoresPuntuadas (se muestra las 10 películas con mejor calificación)*/
@@ -285,4 +381,28 @@ BEGIN
 END;
 GO
 
+--luego de dar de que el administrador dé de baja una película, se eliminan lógicamente de todas las watchlists
+
+CREATE TRIGGER TR_EliminarPeliculaDeWatchlists
+ON Peliculas
+AFTER UPDATE
+AS
+BEGIN
+
+    DECLARE @IdPelicula INT;
+    DECLARE @EstadoNuevo INT;
+    DECLARE @EstadoViejo INT;
+
+    SELECT @IdPelicula = IdPelicula, @EstadoNuevo = Activo FROM inserted;
+    SELECT @EstadoViejo = Activo FROM deleted;
+
+    IF @EstadoNuevo = 0 AND @EstadoViejo = 1
+    BEGIN
+     
+        UPDATE Watchlist
+        SET Activo = 0
+        WHERE IdPelicula = @IdPelicula;
+    END
+END;
+GO
 
