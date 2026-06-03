@@ -27,6 +27,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="CatalogoPeliculas.aspx">Catálogo de películas</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="ResumenActividadUsuarios.aspx">Ver Resumen Actividad</a>
+                        </li>
                     </ul>
                 </div>
             </div>
