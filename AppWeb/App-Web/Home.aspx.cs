@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Negocio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,18 @@ namespace App_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                cargarPeliculas();
+            }
+        }
 
+        private void cargarPeliculas()
+        {
+            PeliculaNegocio negocio = new PeliculaNegocio();
+
+            repPeliculas.DataSource = negocio.listar();
+            repPeliculas.DataBind();
         }
     }
 }

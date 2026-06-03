@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CatalogoPeliculas.aspx" />
+    <Content Include="DetallePelicula.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Home.aspx" />
     <Content Include="Web.config" />
@@ -79,6 +80,13 @@
     </Compile>
     <Compile Include="CatalogoPeliculas.aspx.designer.cs">
       <DependentUpon>CatalogoPeliculas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DetallePelicula.aspx.cs">
+      <DependentUpon>DetallePelicula.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DetallePelicula.aspx.designer.cs">
+      <DependentUpon>DetallePelicula.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

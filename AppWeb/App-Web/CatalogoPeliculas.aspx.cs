@@ -76,7 +76,7 @@ namespace App_Web
             int? idActor = ddlActor.SelectedValue == "0" ? (int?)null : int.Parse(ddlActor.SelectedValue);
             int? anio = ddlAnios.SelectedValue == "0" ? (int?)null : int.Parse(ddlAnios.SelectedValue);
 
-            PeliculaNegocio negocio = new PeliculaNegocio();            
+            PeliculaNegocio negocio = new PeliculaNegocio();
             dgvPeliculas.DataSource = negocio.SP_BuscarPeliculas(titulo, idGenero, idClasificacion, idDirector, idActor, anio);
             dgvPeliculas.DataBind();
         }
@@ -86,6 +86,13 @@ namespace App_Web
             PeliculaNegocio negocio = new PeliculaNegocio();
             dgvPeliculas.DataSource = negocio.SP_BuscarPeliculas();
             dgvPeliculas.DataBind();
+        }
+
+        protected void dgvPeliculas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int idPelicula = (int)dgvPeliculas.SelectedDataKey.Value;
+
+            Response.Redirect("DetallePelicula.aspx?id=" + idPelicula);
         }
     }
 }

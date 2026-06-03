@@ -12,9 +12,123 @@ namespace Negocio
 {
     public class PeliculaNegocio
     {
+        public List<Pelicula> listar()
+        {
+            List<Pelicula> lista = new List<Pelicula>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta(
+                    "SELECT P.IdPelicula, P.Titulo, P.Descripcion AS DescripcionPelicula, P.DuracionMinutos, P.FechaEstreno, " +
+                    "P.URLImagen, P.URLTrailer, P.ContadorVisualizaciones, P.PromedioCalificacion, P.Activo, " +
+                    "D.IdDirector, D.Nombre AS NombreDirector, D.Apellido AS ApellidoDirector, D.Nacionalidad AS NacionalidadDirector, " +
+                    "C.IdClasificacion, C.Descripcion AS DescripcionClasificacion, " +
+                    "A.IdActor, A.Nombre AS NombreActor, A.Apellido AS ApellidoActor, A.Nacionalidad AS NacionalidadActor, " +
+                    "G.IdGenero, G.Descripcion AS DescripcionGenero " +
+                    "FROM Peliculas P " +
+                    "INNER JOIN Directores D ON D.IdDirector = P.IdDirector " +
+                    "INNER JOIN Clasificaciones C ON C.IdClasificacion = P.IdClasificacion " +
+                    "LEFT JOIN PeliculasxActores PA ON PA.IdPelicula = P.IdPelicula " +
+                    "LEFT JOIN Actores A ON A.IdActor = PA.IdActor " +
+                    "LEFT JOIN PeliculasxGeneros PG ON PG.IdPelicula = P.IdPelicula " +
+                    "LEFT JOIN Generos G ON G.IdGenero = PG.IdGenero"
+                    );
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    int idPelicula = (int)datos.Lector["IdPelicula"];
+
+                    Pelicula pelicula = lista.Find(x => x.IdPelicula == idPelicula);
+
+                    if (pelicula == null)
+                    {
+                        pelicula = new Pelicula();
+
+                        pelicula.IdPelicula = idPelicula;
+                        pelicula.Titulo = datos.Lector["Titulo"].ToString();
+                        pelicula.Descripcion = datos.Lector["DescripcionPelicula"].ToString();
+                        pelicula.DuracionMinutos = (int)datos.Lector["DuracionMinutos"];
+                        pelicula.FechaEstreno = (DateTime)datos.Lector["FechaEstreno"];
+                        pelicula.URLImagen = (string)datos.Lector["URLImagen"];
+                        pelicula.URLTrailer = (string)datos.Lector["URLTrailer"];
+                        pelicula.ContadorVisualizaciones = (int)datos.Lector["ContadorVisualizaciones"];
+                        pelicula.PromedioCalificacion = (decimal)datos.Lector["PromedioCalificacion"];
+                        pelicula.Activo = (bool)datos.Lector["Activo"];
+
+                        pelicula.Director = new Director
+                        {
+                            IdDirector = (int)datos.Lector["IdDirector"],
+                            Nombre = datos.Lector["NombreDirector"].ToString(),
+                            Apellido = datos.Lector["ApellidoDirector"].ToString(),
+                            Nacionalidad = datos.Lector["NacionalidadDirector"].ToString()
+                        };
+
+                        pelicula.Clasificacion = new Clasificacion
+                        {
+                            IdClasificacion = (int)datos.Lector["IdClasificacion"],
+                            Descripcion = datos.Lector["DescripcionClasificacion"].ToString()
+                        };
+
+                        pelicula.Actores = new List<Actor>();
+                        pelicula.Generos = new List<Genero>();
+
+                        lista.Add(pelicula);
+                    }
+
+                    if (datos.Lector["IdActor"] != DBNull.Value)
+                    {
+                        int idActor = (int)datos.Lector["IdActor"];
+
+                        bool actorExiste = pelicula.Actores.Exists(a => a.IdActor == idActor);
+
+                        if (!actorExiste)
+                        {
+                            pelicula.Actores.Add(new Actor
+                            {
+                                IdActor = idActor,
+                                Nombre = datos.Lector["NombreActor"].ToString(),
+                                Apellido = datos.Lector["ApellidoActor"].ToString(),
+                                Nacionalidad = datos.Lector["NacionalidadActor"].ToString()
+                            });
+                        }
+                    }
+
+                    if (datos.Lector["IdGenero"] != DBNull.Value)
+                    {
+                        int idGenero = (int)datos.Lector["IdGenero"];
+
+                        bool generoExiste = pelicula.Generos.Exists(g => g.IdGenero == idGenero);
+
+                        if (!generoExiste)
+                        {
+                            pelicula.Generos.Add(new Genero
+                            {
+                                IdGenero = idGenero,
+                                Descripcion = datos.Lector["DescripcionGenero"].ToString()
+                            });
+                        }
+                    }
+
+                }
+                return lista;
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
         public List<Pelicula> SP_BuscarPeliculas(
-            string titulo = null, 
-            int? idgenero = null, 
+            string titulo = null,
+            int? idgenero = null,
             int? idclasificacion = null,
             int? iddirector = null,
             int? idactor = null,
