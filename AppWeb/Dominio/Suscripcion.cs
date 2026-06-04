@@ -10,7 +10,7 @@ namespace Dominio
     {
         public int IdSuscripcion { get; set; }
         public string Descripcion { get; set; }
-        public int PrecioMensual { get; set; }
+        public decimal PrecioMensual { get; set; }
         public DateTime FechaAlta { get; set; }
         // DateTime que admite NULL
         public DateTime? FechaBaja { get; set; }

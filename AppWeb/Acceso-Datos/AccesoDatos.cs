@@ -67,7 +67,10 @@ namespace Acceso_Datos
         }
         public void setearParametro(string nombre, object valor)
         {
-            comando.Parameters.AddWithValue(nombre, valor);
+            if (valor == null)
+                comando.Parameters.AddWithValue(nombre, DBNull.Value);
+            else
+                comando.Parameters.AddWithValue(nombre, valor);
         }
         public void cerrarConexion()
         {
