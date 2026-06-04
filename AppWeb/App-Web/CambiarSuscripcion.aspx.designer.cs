@@ -11,61 +11,61 @@ namespace App_Web
 {
 
 
-    public partial class Master
+    public partial class CambiarSuscripcion
     {
 
         /// <summary>
-        /// Control head.
+        /// Control lblSuscripcionActual.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+        protected global::System.Web.UI.WebControls.Label lblSuscripcionActual;
 
         /// <summary>
-        /// Control form1.
+        /// Control lblPrecioActual.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Label lblPrecioActual;
 
         /// <summary>
-        /// Control liLogin.
+        /// Control ddlSuscripcion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liLogin;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSuscripcion;
 
         /// <summary>
-        /// Control liLogout.
+        /// Control lblPrecioNueva.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liLogout;
+        protected global::System.Web.UI.WebControls.Label lblPrecioNueva;
 
         /// <summary>
-        /// Control liSuscripcion.
+        /// Control btnCambiar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liSuscripcion;
+        protected global::System.Web.UI.WebControls.Button btnCambiar;
 
         /// <summary>
-        /// Control ContentPlaceHolder1.
+        /// Control lblMensaje.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder1;
+        protected global::System.Web.UI.WebControls.Label lblMensaje;
     }
 }

@@ -222,6 +222,11 @@ ALTER TABLE Watchlist
 ADD CONSTRAINT FK_Watchlist_Pelicula
 FOREIGN KEY (IdPelicula) REFERENCES Peliculas(IdPelicula);
 
+ALTER TABLE Resenias
+ADD CONSTRAINT UQ_Resenias_Usuario_Pelicula
+UNIQUE (IdUsuario, IdPelicula);
 
-
+ALTER TABLE Watchlist
+ADD CONSTRAINT UQ_Watchlist_Usuario_Pelicula
+UNIQUE (IdUsuario, IdPelicula);
 

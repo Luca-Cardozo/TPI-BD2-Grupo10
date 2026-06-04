@@ -24,8 +24,11 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="Home.aspx">Home</a>
                         </li>
-                        <li class="nav-item">
+                        <li id="liLogin" runat="server" class="nav-item">
                             <a class="nav-link" href="Login.aspx">Login</a>
+                        </li>
+                        <li id="liLogout" runat="server" class="nav-item">
+                            <a class="nav-link" href="Logout.aspx">Logout</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="RegistroUsuario.aspx">Registrarse</a>
@@ -35,6 +38,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="ResumenActividadUsuarios.aspx">Ver Resumen Actividad</a>
+                        </li>
+                        <li id="liSuscripcion" runat="server" class="nav-item">
+                            <a class="nav-link" href="CambiarSuscripcion.aspx">Mi Suscripción</a>
                         </li>
                     </ul>
                 </div>

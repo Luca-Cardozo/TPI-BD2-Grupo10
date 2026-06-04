@@ -67,16 +67,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CambiarSuscripcion.aspx" />
     <Content Include="CatalogoPeliculas.aspx" />
     <Content Include="DetallePelicula.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Home.aspx" />
     <Content Include="Login.aspx" />
+    <Content Include="Logout.aspx" />
     <Content Include="RegistroUsuario.aspx" />
     <Content Include="ResumenActividadUsuarios.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CambiarSuscripcion.aspx.cs">
+      <DependentUpon>CambiarSuscripcion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CambiarSuscripcion.aspx.designer.cs">
+      <DependentUpon>CambiarSuscripcion.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CatalogoPeliculas.aspx.cs">
       <DependentUpon>CatalogoPeliculas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -107,6 +116,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="Master.Master.cs">
       <DependentUpon>Master.Master</DependentUpon>

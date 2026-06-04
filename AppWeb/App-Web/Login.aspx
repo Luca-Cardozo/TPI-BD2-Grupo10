@@ -20,11 +20,15 @@
             </div>
 
             <div class="d-grid gap-2">
-                <asp:Button Text="Ingresar" CssClass="btn btn-primary" ID="btnLogin" runat="server" />
+                <asp:Button Text="Ingresar" CssClass="btn btn-primary" ID="btnLogin" runat="server" OnClick="btnLogin_Click" />
 
                 <asp:Button ID="btnVolverHome" runat="server" Text="Volver a página principal"
                     OnClick="btnVolverHome_Click"
                     CssClass="btn btn-outline-secondary" />
+            </div>
+
+            <div class="d-grid gap-2">
+                <asp:Label ID="lblError" runat="server" CssClass="text-danger d-block mb-3 text-center" />
             </div>
 
         </div>

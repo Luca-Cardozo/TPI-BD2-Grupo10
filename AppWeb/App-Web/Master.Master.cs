@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,13 @@ namespace App_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            bool logueado = Session["Usuario"] != null;
 
+            liLogin.Visible = !logueado;
+
+            liLogout.Visible = logueado;
+
+            liSuscripcion.Visible = logueado;
         }
     }
 }
