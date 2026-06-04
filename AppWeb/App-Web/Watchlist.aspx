@@ -32,11 +32,18 @@
 
                                 <h5 class="text-center"><%# Eval("Titulo") %></h5>
 
-                                <p class="text-center text-muted mb-2"> ⭐ <%# Eval("PromedioCalificacion") %></p>
+                                <p class="text-center text-muted mb-2">⭐ <%# Eval("PromedioCalificacion") %></p>
 
                                 <div class="mt-auto">
 
                                     <a href='DetallePelicula.aspx?id=<%# Eval("IdPelicula") %>' class="btn btn-primary w-100">Ver detalle</a>
+
+                                    <asp:Button ID="btnEliminar" runat="server" 
+                                        Text="🗑 Quitar de Watchlist" 
+                                        CssClass="btn btn-outline-danger" 
+                                        CommandArgument='<%# Eval("IdPelicula") %>' 
+                                        OnClick="btnEliminar_Click" 
+                                        OnClientClick="return confirm('¿Deseás quitar esta película de tu watchlist?');"/>
 
                                 </div>
 

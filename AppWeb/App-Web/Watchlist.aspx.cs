@@ -20,7 +20,7 @@ namespace App_Web
 
             Usuario usuario = (Usuario)Session["Usuario"];
 
-            if (usuario.SuscripcionActual.Descripcion != "Premium")
+            if (usuario.SuscripcionActual.IdSuscripcion != 3)
             {
                 Response.Redirect("Home.aspx");
             }
@@ -40,6 +40,25 @@ namespace App_Web
             repWatchlist.DataSource = negocio.listarWatchlistPorUsuario(usuario.IdUsuario);
 
             repWatchlist.DataBind();
+        }
+
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Button btn = (Button)sender;
+                int idPelicula = int.Parse(btn.CommandArgument);
+
+                Usuario usuario = (Usuario)Session["Usuario"];
+                PeliculaNegocio negocio = new PeliculaNegocio();
+
+                negocio.eliminarPeliculaDeWatchlistDeUsuario(usuario.IdUsuario, idPelicula);
+                cargarWatchlist();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

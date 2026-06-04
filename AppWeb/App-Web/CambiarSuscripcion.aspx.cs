@@ -79,13 +79,6 @@ namespace App_Web
 
                 int idNuevaSuscripcion = int.Parse(ddlSuscripcion.SelectedValue);
 
-                if (usuario.SuscripcionActual.IdSuscripcion == idNuevaSuscripcion)
-                {
-                    lblMensaje.CssClass = "text-warning d-block mt-3 text-center fw-bold";
-                    lblMensaje.Text = "⚠ Ya tenés esa suscripción activa.";
-                    return;
-                }
-
                 UsuarioNegocio negocio = new UsuarioNegocio();
 
                 negocio.cambiarSuscripcion(usuario.IdUsuario, idNuevaSuscripcion);
@@ -102,7 +95,9 @@ namespace App_Web
             }
             catch (Exception ex)
             {
-                Session.Add("error", ex.ToString());
+                // Mostrar RAISERROR del SP
+                lblMensaje.CssClass = "alert alert-danger text-center mt-3";
+                lblMensaje.Text = "❌ " + ex.Message;
             }
         }
     }

@@ -26,7 +26,7 @@ namespace App_Web
             {
                 Usuario usuario = (Usuario)Session["Usuario"];
 
-                liWatchlist.Visible = usuario.SuscripcionActual.Descripcion == "Premium";
+                liWatchlist.Visible = usuario.SuscripcionActual.IdSuscripcion == 3;
             }
         }
     }

@@ -106,7 +106,11 @@
 
                 <asp:Button ID="btnReproducir" runat="server" Text="▶️ Reproducir" CssClass="btn btn-success" />
 
-                <asp:Button ID="btnWatchlist" runat="server" Text="❤️ Agregar a Watchlist" CssClass="btn btn-primary" />
+                <asp:Button ID="btnWatchlist" runat="server" Text="❤️ Agregar a Watchlist" CssClass="btn btn-primary" OnClick="btnWatchlist_Click" />
+
+                <div>
+                    <asp:Label ID="lblMensaje" runat="server" CssClass="d-block mt-3 text-center fw-bold" />
+                </div>
 
             </div>
 

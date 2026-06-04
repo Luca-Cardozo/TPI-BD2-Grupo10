@@ -170,7 +170,52 @@ namespace Negocio
             }
         }
 
+        public void agregarPeliculaDeWatchlistDeUsuario(int idUsuario, int idPelicula)
+        {
+            AccesoDatos datos = new AccesoDatos();
 
+            try
+            {
+                datos.setearConsulta("INSERT INTO Watchlist (IdUsuario, IdPelicula, Activo) " +
+                    "VALUES (@IdUsuario, @IdPelicula, 1)");
+
+                datos.setearParametro("@IdUsuario", idUsuario);
+
+                datos.setearParametro("@IdPelicula", idPelicula);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+        public void eliminarPeliculaDeWatchlistDeUsuario(int idUsuario, int idPelicula)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("DELETE FROM Watchlist WHERE IdUsuario = @IdUsuario AND IdPelicula = @IdPelicula");
+                datos.setearParametro("@IdUsuario", idUsuario);
+                datos.setearParametro("@IdPelicula", idPelicula);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
         public List<Pelicula> SP_BuscarPeliculas(
             string titulo = null,

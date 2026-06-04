@@ -125,7 +125,7 @@ BEGIN
 		
 		IF EXISTS (SELECT 1 FROM UsuariosxSuscripciones WHERE IdUsuario = @IdUsuario AND IdSuscripcion = @IdSuscripcionNueva AND Activo = 1)
         BEGIN
-            RAISERROR('El usuario ya posee esa suscripción activa', 16, 1);
+            RAISERROR('Ya posee esa suscripción activa', 16, 1);
             RETURN;
         END
 
@@ -138,7 +138,8 @@ BEGIN
 	END TRY
 	BEGIN CATCH
 
-		ROLLBACK TRANSACTION
+		IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION;
 		DECLARE @MensajeError VARCHAR(4000);
         SET @MensajeError = ERROR_MESSAGE();
 		RAISERROR(@MensajeError, 16, 1);

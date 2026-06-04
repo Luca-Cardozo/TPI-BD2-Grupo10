@@ -65,5 +65,42 @@ namespace App_Web
             }
         }
 
+        protected void btnWatchlist_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Session["Usuario"] == null)
+                {
+                    Response.Redirect("Login.aspx");
+                }
+
+                Usuario usuario = (Usuario)Session["Usuario"];
+
+                if (usuario.SuscripcionActual.IdSuscripcion != 3)
+                {
+                    lblMensaje.CssClass = "text-warning d-block mt-3 text-center fw-bold";
+                    lblMensaje.Text = "⚠ Esta función está disponible solo para usuarios Premium.";
+                    return;
+                }
+
+                int idPelicula = int.Parse(Request.QueryString["id"]);
+
+                PeliculaNegocio negocio = new PeliculaNegocio();
+
+                negocio.agregarPeliculaDeWatchlistDeUsuario(usuario.IdUsuario, idPelicula);
+
+                lblMensaje.CssClass = "text-success d-block mt-3 text-center fw-bold";
+
+                lblMensaje.Text = "✅ Película agregada a tu watchlist.";
+
+                Response.Redirect("Watchlist.aspx");
+            }
+            catch (Exception ex)
+            {
+                // Mensajes del RAISERROR
+                lblMensaje.CssClass = "text-danger d-block mt-3 text-center fw-bold";
+                lblMensaje.Text = "❌ " + ex.Message;
+            }
+        }
     }
 }
