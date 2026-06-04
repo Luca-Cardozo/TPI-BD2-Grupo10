@@ -19,6 +19,15 @@ namespace App_Web
             liLogout.Visible = logueado;
 
             liSuscripcion.Visible = logueado;
+
+            liWatchlist.Visible = false;
+
+            if (logueado)
+            {
+                Usuario usuario = (Usuario)Session["Usuario"];
+
+                liWatchlist.Visible = usuario.SuscripcionActual.Descripcion == "Premium";
+            }
         }
     }
 }

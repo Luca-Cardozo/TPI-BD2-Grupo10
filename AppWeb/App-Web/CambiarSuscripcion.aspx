@@ -30,6 +30,22 @@
 
 
                         <div class="mb-3">
+                            <hr />
+                            <p>
+                                ➡ La suscripción Gratuita solo te permite explorar el catálogo de películas
+                            </p>
+
+                            <p>
+                                ➡ Mejorá al plan Estándar para poder reseñarlas y puntuarlas
+                            </p>
+
+                            <p>
+                                ➡ Mejorá al plan Premium para poder reproducirlas y armar tu propia lista de favoritas
+                            </p>
+                            <hr />
+                        </div>
+
+                        <div class="mb-3">
 
                             <label class="form-label">Seleccionar nueva suscripción</label>
 

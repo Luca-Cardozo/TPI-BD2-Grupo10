@@ -76,6 +76,7 @@
     <Content Include="Logout.aspx" />
     <Content Include="RegistroUsuario.aspx" />
     <Content Include="ResumenActividadUsuarios.aspx" />
+    <Content Include="Watchlist.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,13 @@
     </Compile>
     <Compile Include="ResumenActividadUsuarios.aspx.designer.cs">
       <DependentUpon>ResumenActividadUsuarios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Watchlist.aspx.cs">
+      <DependentUpon>Watchlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Watchlist.aspx.designer.cs">
+      <DependentUpon>Watchlist.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

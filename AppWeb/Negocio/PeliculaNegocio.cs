@@ -126,6 +126,52 @@ namespace Negocio
         }
 
 
+        public List<Pelicula> listarWatchlistPorUsuario(int idUsuario)
+        {
+            List<Pelicula> lista = new List<Pelicula>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT P.IdPelicula, P.Titulo, P.URLImagen, " +
+                    "P.FechaEstreno, P.DuracionMinutos, P.PromedioCalificacion " +
+                    "FROM Peliculas P " +
+                    "INNER JOIN Watchlist W ON P.IdPelicula = W.IdPelicula " +
+                    "WHERE W.IdUsuario = @IdUsuario AND W.Activo = 1"
+                );
+
+                datos.setearParametro("@IdUsuario", idUsuario);
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Pelicula aux = new Pelicula();
+
+                    aux.IdPelicula = (int)datos.Lector["IdPelicula"];
+                    aux.Titulo = datos.Lector["Titulo"].ToString();
+                    aux.URLImagen = datos.Lector["URLImagen"].ToString();
+                    aux.FechaEstreno = (DateTime)datos.Lector["FechaEstreno"];
+                    aux.DuracionMinutos = (int)datos.Lector["DuracionMinutos"];
+                    aux.PromedioCalificacion = (decimal)datos.Lector["PromedioCalificacion"];
+
+                    lista.Add(aux);
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
+
         public List<Pelicula> SP_BuscarPeliculas(
             string titulo = null,
             int? idgenero = null,

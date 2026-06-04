@@ -60,6 +60,15 @@ namespace App_Web
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liSuscripcion;
 
         /// <summary>
+        /// Control liWatchlist.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liWatchlist;
+
+        /// <summary>
         /// Control ContentPlaceHolder1.
         /// </summary>
         /// <remarks>
