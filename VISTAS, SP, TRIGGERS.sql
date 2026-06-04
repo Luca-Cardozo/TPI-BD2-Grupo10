@@ -15,7 +15,7 @@ LEFT JOIN Resenias R ON R.IdUsuario = U.IdUsuario
 LEFT JOIN Visualizaciones V ON V.IdUsuario = U.IdUsuario
 WHERE US.Activo = 1
 GROUP BY U.Nombre, U.Apellido, U.DNI, U.Email, S.Descripcion
-
+GO
 --Se utiliza la vista para tareas administrativas. La misma muestra el historial de suscripciones de cada usuario con fechas de alta y de baja, incluyendo el tipo de membresía y la vigencia de la misma.
 CREATE VIEW VW_HistorialSuscripciones
 AS
@@ -108,7 +108,7 @@ BEGIN
 	AND (@AnioEstreno IS NULL OR YEAR(P.FechaEstreno) = @AnioEstreno)
     ORDER BY P.Titulo;
 END
-
+GO
 -- Se actualiza la suscripción de un Usuario dándose de baja la anterior y de alta la nueva
 
 CREATE PROCEDURE SP_CambioSuscripcion
@@ -174,7 +174,7 @@ BEGIN
 	END
 	INSERT INTO Watchlist (IdUsuario, IdPelicula, Activo) VALUES (@IdUsuario, @IdPelicula, 1)
 END
-
+GO
 --cada vez que un usuario reproduce una película, se suma 1 al contador de visualizaciones de dicha película
 
 CREATE TRIGGER TR_ActualizarContadorVisualizaciones
