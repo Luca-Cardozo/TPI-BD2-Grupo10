@@ -123,6 +123,33 @@ namespace App_Web
         protected global::System.Web.UI.WebControls.HyperLink lnkTrailer;
 
         /// <summary>
+        /// Control btnResenia.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnResenia;
+
+        /// <summary>
+        /// Control btnReproducir.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnReproducir;
+
+        /// <summary>
+        /// Control btnWatchlist.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnWatchlist;
+
+        /// <summary>
         /// Control repResenias.
         /// </summary>
         /// <remarks>

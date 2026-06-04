@@ -56,11 +56,11 @@
                     <br />
                     <asp:Repeater ID="repGeneros" runat="server">
 
-                        <itemtemplate>
+                        <ItemTemplate>
                             <span class="badge bg-primary me-1">
                                 <%# Eval("Descripcion") %>
                             </span>
-                        </itemtemplate>
+                        </ItemTemplate>
 
                     </asp:Repeater>
                 </div>
@@ -72,12 +72,12 @@
                     <ul class="list-group mt-2">
                         <asp:Repeater ID="repActores" runat="server">
 
-                            <itemtemplate>
+                            <ItemTemplate>
                                 <li class="list-group-item">
                                     <%# Eval("Nombre") %>
                                     <%# Eval("Apellido") %>
                                 </li>
-                            </itemtemplate>
+                            </ItemTemplate>
 
                         </asp:Repeater>
                     </ul>
@@ -102,6 +102,12 @@
 
                 <asp:HyperLink ID="lnkTrailer" runat="server" CssClass="btn btn-danger" Target="_blank" Text="Ver Trailer" />
 
+                <asp:Button ID="btnResenia" runat="server" Text="✍️ Dejar reseña y calificar" CssClass="btn btn-warning" />
+
+                <asp:Button ID="btnReproducir" runat="server" Text="▶️ Reproducir" CssClass="btn btn-success" />
+
+                <asp:Button ID="btnWatchlist" runat="server" Text="❤️ Agregar a Watchlist" CssClass="btn btn-primary" />
+
             </div>
 
         </div>
@@ -115,7 +121,7 @@
 
         <asp:Repeater ID="repResenias" runat="server">
 
-            <itemtemplate>
+            <ItemTemplate>
 
                 <div class="card mb-3 shadow-sm">
 
@@ -148,7 +154,7 @@
 
                 </div>
 
-            </itemtemplate>
+            </ItemTemplate>
 
         </asp:Repeater>
 
