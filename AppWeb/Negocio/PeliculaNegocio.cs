@@ -261,5 +261,26 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public void registrarVisualizacion(int idUsuario, int idPelicula)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearProcedimiento("SP_RegistrarVisualizacion");
+                datos.setearParametro("@IdUsuario", idUsuario);
+                datos.setearParametro("@IdPelicula", idPelicula);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

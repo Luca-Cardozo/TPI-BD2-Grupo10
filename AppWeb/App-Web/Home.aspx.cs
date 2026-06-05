@@ -1,4 +1,5 @@
-﻿using Negocio;
+﻿using Dominio;
+using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,17 @@ namespace App_Web
 
             repPeliculas.DataSource = negocio.listar();
             repPeliculas.DataBind();
+        }
+
+        protected void btnDetalle_Click(object sender, EventArgs e)
+        {
+            if ((Usuario)Session["Usuario"] == null)
+            {
+                Response.Redirect("Login.aspx");
+                return;
+            }
+            int idPelicula = int.Parse(((Button)sender).CommandArgument);
+            Response.Redirect("DetallePelicula.aspx?id=" + idPelicula);
         }
     }
 }

@@ -15,11 +15,11 @@ namespace App_Web
             bool logueado = Session["Usuario"] != null;
 
             liLogin.Visible = !logueado;
-
             liLogout.Visible = logueado;
-
+            liRegistro.Visible = !logueado;
+            liCatalogo.Visible = logueado;
             liSuscripcion.Visible = logueado;
-
+            liResumenActividadUsuarios.Visible = false;
             liWatchlist.Visible = false;
 
             if (logueado)
@@ -27,7 +27,9 @@ namespace App_Web
                 Usuario usuario = (Usuario)Session["Usuario"];
 
                 liWatchlist.Visible = usuario.SuscripcionActual.IdSuscripcion == 3;
+                liResumenActividadUsuarios.Visible = usuario.EsAdmin == true;
             }
+
         }
     }
 }

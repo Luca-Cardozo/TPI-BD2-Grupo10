@@ -41,9 +41,7 @@
                                 </h5>
 
                                 <div class="mt-auto text-center">
-                                    <a href='DetallePelicula.aspx?id=<%# Eval("IdPelicula") %>'
-                                        class="btn btn-primary w-100">Ver detalle
-                                    </a>
+                                    <asp:Button Text="Ver detalle" runat="server" ID="btnDetalle" CssClass="btn btn-primary w-100" CommandArgument='<%# Eval("IdPelicula") %>' OnClick="btnDetalle_Click" />
                                 </div>
 
                             </div>

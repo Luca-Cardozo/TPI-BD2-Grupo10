@@ -51,6 +51,24 @@ namespace App_Web
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liLogout;
 
         /// <summary>
+        /// Control liRegistro.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liRegistro;
+
+        /// <summary>
+        /// Control liCatalogo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liCatalogo;
+
+        /// <summary>
         /// Control liSuscripcion.
         /// </summary>
         /// <remarks>
@@ -67,6 +85,15 @@ namespace App_Web
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liWatchlist;
+
+        /// <summary>
+        /// Control liResumenActividadUsuarios.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl liResumenActividadUsuarios;
 
         /// <summary>
         /// Control ContentPlaceHolder1.

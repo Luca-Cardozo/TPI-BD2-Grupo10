@@ -308,7 +308,7 @@ BEGIN
           AND uxs.IdSuscripcion = 3
     )
     BEGIN
-        RAISERROR('El usuario no posee una suscripción Premium activa.', 16, 1);
+        RAISERROR('Requiere una suscripción Premium activa.', 16, 1);
         RETURN;
     END
 
@@ -324,7 +324,9 @@ BEGIN
 	BEGIN CATCH
 		IF @@TRANCOUNT > 0
 			ROLLBACK TRANSACTION;
-		RAISERROR('Ocurrió un error, no se pudo registrar la visualización', 16, 1);
+		DECLARE @MensajeError VARCHAR(4000);
+        SET @MensajeError = ERROR_MESSAGE();
+        RAISERROR(@MensajeError, 16, 1);
 		RETURN;
 	END CATCH
 END;

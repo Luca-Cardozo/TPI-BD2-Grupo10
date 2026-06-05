@@ -104,7 +104,7 @@
 
                 <asp:Button ID="btnResenia" runat="server" Text="✍️ Dejar reseña y calificar" CssClass="btn btn-warning" />
 
-                <asp:Button ID="btnReproducir" runat="server" Text="▶️ Reproducir" CssClass="btn btn-success" />
+                <asp:Button ID="btnReproducir" runat="server" Text="▶️ Reproducir" CssClass="btn btn-success" OnClick="btnReproducir_Click" />
 
                 <asp:Button ID="btnWatchlist" runat="server" Text="❤️ Agregar a Watchlist" CssClass="btn btn-primary" OnClick="btnWatchlist_Click" />
 

@@ -102,5 +102,37 @@ namespace App_Web
                 lblMensaje.Text = "❌ " + ex.Message;
             }
         }
+
+        protected void btnReproducir_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Session["Usuario"] == null)
+                {
+                    Response.Redirect("Login.aspx");
+                    return;
+                }
+
+                Usuario usuario = (Usuario)Session["Usuario"];
+
+                int idPelicula = int.Parse(Request.QueryString["id"]);
+
+                PeliculaNegocio negocio = new PeliculaNegocio();
+
+                negocio.registrarVisualizacion(usuario.IdUsuario, idPelicula);
+
+                lblMensaje.CssClass = "alert alert-success mt-3 text-center";
+                lblMensaje.Text = "✅ Reproducción iniciada.";
+                lblMensaje.Visible = true;
+
+            }
+            catch (Exception ex)
+            {
+                // Mostrar RAISERROR del SP
+                lblMensaje.CssClass = "alert alert-danger mt-3 text-center";
+                lblMensaje.Text = "❌ " + ex.Message;
+                lblMensaje.Visible = true;
+            }
+        }
     }
 }
