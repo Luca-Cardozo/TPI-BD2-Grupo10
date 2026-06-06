@@ -57,5 +57,64 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public void registrarResenia(int idUsuario, int idPelicula, string comentario, int calificacion)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearProcedimiento("SP_RegistrarResenia");
+                datos.setearParametro("@IdUsuario", idUsuario);
+                datos.setearParametro("@IdPelicula", idPelicula);
+                datos.setearParametro("@Comentario", comentario);
+                datos.setearParametro("@Calificacion", calificacion);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public Resenia leerResenia(int idUsuario, int idPelicula)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT Comentario, Calificacion FROM Resenias " +
+                    "WHERE IdUsuario = @IdUsuario AND IdPelicula = @IdPelicula"
+                );
+
+                datos.setearParametro("@IdUsuario", idUsuario);
+
+                datos.setearParametro("@IdPelicula", idPelicula);
+
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    Resenia aux = new Resenia();
+                    aux.Comentario = datos.Lector["Comentario"].ToString();
+                    aux.Calificacion = (int)datos.Lector["Calificacion"];
+                    return aux;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

@@ -250,7 +250,7 @@ BEGIN
 		  AND IdSuscripcion IN (2,3)
     )
     BEGIN
-        RAISERROR('El usuario no tiene una suscripción activa para realizar reseñas.', 16, 1);
+        RAISERROR('Necesitás una suscripción Estándar o Premium activa para dejar reseñas', 16, 1);
         RETURN;
     END
 
@@ -282,7 +282,9 @@ BEGIN
 	BEGIN CATCH
 		IF @@TRANCOUNT > 0
 			ROLLBACK TRANSACTION;
-		RAISERROR('Ocurrió un error, no se pudo registrar la reseña', 16, 1);
+		DECLARE @MensajeError VARCHAR(4000);
+        SET @MensajeError = ERROR_MESSAGE();
+        RAISERROR(@MensajeError, 16, 1);
 		RETURN;
 	END CATCH
 

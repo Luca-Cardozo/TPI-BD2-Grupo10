@@ -102,13 +102,13 @@
 
                 <asp:HyperLink ID="lnkTrailer" runat="server" CssClass="btn btn-danger" Target="_blank" Text="Ver Trailer" />
 
-                <asp:Button ID="btnResenia" runat="server" Text="✍️ Dejar reseña y calificar" CssClass="btn btn-warning" />
+                <asp:Button ID="btnResenia" runat="server" Text="✍️ Dejar reseña y calificar" CssClass="btn btn-warning" OnClick="btnResenia_Click" />
 
                 <asp:Button ID="btnReproducir" runat="server" Text="▶️ Reproducir" CssClass="btn btn-success" OnClick="btnReproducir_Click" />
 
                 <asp:Button ID="btnWatchlist" runat="server" Text="❤️ Agregar a Watchlist" CssClass="btn btn-primary" OnClick="btnWatchlist_Click" />
 
-                <div>
+                <div class="row mb-4">
                     <asp:Label ID="lblMensaje" runat="server" CssClass="d-block mt-3 text-center fw-bold" />
                 </div>
 
