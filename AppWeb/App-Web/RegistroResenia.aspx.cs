@@ -22,6 +22,8 @@ namespace App_Web
             if (!IsPostBack)
             {
                 cargarCalificaciones();
+                cargarDatosPelicula();
+
                 cargarReseniaExistente();
             }
         }
@@ -101,6 +103,34 @@ namespace App_Web
             lblMensaje.Visible = true;
             lblMensaje.CssClass = $"alert alert-{tipo} mt-3 text-center";
             lblMensaje.Text = mensaje;
+        }
+
+
+
+        private void cargarDatosPelicula()
+        {
+            int idPelicula =
+                int.Parse(Request.QueryString["id"]);
+
+            PeliculaNegocio negocio =
+                new PeliculaNegocio();
+
+            Pelicula pelicula =
+                negocio.listar().Find(
+                    x => x.IdPelicula == idPelicula);
+
+            if (pelicula != null)
+            {
+                imgPelicula.ImageUrl =
+                    pelicula.URLImagen;
+
+                lblTitulo.Text =
+                    pelicula.Titulo;
+
+                lblPromedio.Text =
+                    pelicula.PromedioCalificacion
+                    .ToString("0.0");
+            }
         }
     }
 }
