@@ -155,7 +155,7 @@ GO
 
 -- Se evita que un usuario agregue dos veces una película a su watchlist si la película está activa. Si está inactiva, se vuelve a reactivar.
 
-CREATE TRIGGER TR_EvitarDuplicadoWatchlist ON Watchlist
+ALTER TRIGGER TR_EvitarDuplicadoWatchlist ON Watchlist
 INSTEAD OF INSERT
 AS
 BEGIN
@@ -178,7 +178,7 @@ END
 GO
 --cada vez que un usuario reproduce una película, se suma 1 al contador de visualizaciones de dicha película
 
-CREATE TRIGGER TR_ActualizarContadorVisualizaciones
+ALTER TRIGGER TR_ActualizarContadorVisualizaciones
 ON Visualizaciones
 AFTER INSERT
 AS
@@ -192,7 +192,7 @@ END;
 GO
 
 --En lugar de una baja física se hace una baja lógica)
-CREATE TRIGGER TR_BajaLogicaWatchlist
+Alter TRIGGER TR_BajaLogicaWatchlist
 ON Watchlist
 INSTEAD OF DELETE
 AS
@@ -208,6 +208,8 @@ BEGIN
     WHERE IdUsuario = @IdUsuario AND IdPelicula = @IdPelicula;
 END;
 GO
+
+sp_helptext 'TR_BajaLogicaWatchlist'
 
 
 --VISTA
@@ -231,7 +233,7 @@ FROM VW_RankingMejoresPuntuadas;
 -- PROCEDIMIENTOS ALMACENADOS
 /*SP_RegistrarResenia (INSERT de una nueva reseña de una determinada película de un determinado usuario, la cual modfica existente o carga nueva)*/
 
-CREATE PROCEDURE SP_RegistrarResenia
+ALTER PROCEDURE SP_RegistrarResenia
     @IdUsuario INT,
     @IdPelicula INT,
     @Comentario VARCHAR(1000),
@@ -293,7 +295,7 @@ GO
 
 /*SP_RegistrarVisualizacion (INSERT de una nueva visualización de una determinada película de un determinado usuario, se valida que el usuario posea suscripción Premium activa para poder realizar la inserción)
 */
-CREATE PROCEDURE SP_RegistrarVisualizacion
+ALTER PROCEDURE SP_RegistrarVisualizacion
     @IdUsuario INT,
     @IdPelicula INT
 AS
@@ -411,3 +413,80 @@ BEGIN
 END;
 GO
 
+ALTER PROCEDURE SP_RegistrarResenia
+    @IdUsuario INT,
+    @IdPelicula INT,
+    @Comentario VARCHAR(1000),
+    @Calificacion INT
+AS
+BEGIN
+    
+	BEGIN TRY
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM UsuariosxSuscripciones
+        WHERE IdUsuario = @IdUsuario
+          AND Activo = 1
+          AND FechaBaja IS NULL
+		  AND IdSuscripcion IN (2,3)
+    )
+    BEGIN
+        RAISERROR('Necesitás una suscripción Estándar o Premium activa para dejar reseñas', 16, 1);
+        RETURN;
+    END
+
+	BEGIN TRANSACTION
+
+    IF EXISTS (
+        SELECT 1
+
+        FROM Resenias
+        WHERE IdUsuario = @IdUsuario
+          AND IdPelicula = @IdPelicula
+    )
+    BEGIN
+        UPDATE Resenias
+        SET Comentario = @Comentario,
+            Calificacion = @Calificacion,
+            Fecha = GETDATE()
+        WHERE IdUsuario = @IdUsuario
+          AND IdPelicula = @IdPelicula;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO Resenias (IdUsuario, IdPelicula, Comentario, Calificacion, Fecha)
+        VALUES (@IdUsuario, @IdPelicula, @Comentario, @Calificacion, GETDATE());
+    END
+
+	COMMIT TRANSACTION
+	END TRY
+
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRANSACTION;
+		DECLARE @MensajeError VARCHAR(4000);
+        SET @MensajeError = ERROR_MESSAGE();
+        RAISERROR(@MensajeError, 16, 1);
+		RETURN;
+	END CATCH
+
+END;
+GO
+
+ALTER VIEW VW_RankingMejoresPuntuadas
+AS
+
+SELECT TOP 10
+    p.IdPelicula,
+    p.Titulo,
+    p.PromedioCalificacion,
+    p.URLImagen
+FROM Peliculas p
+WHERE p.Activo = 1
+
+ORDER BY p.PromedioCalificacion DESC;
+
+GO 
+SELECT *
+FROM VW_RankingMejoresPuntuadas;
