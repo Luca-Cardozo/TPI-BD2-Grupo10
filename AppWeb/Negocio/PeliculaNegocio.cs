@@ -282,5 +282,41 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public List<Pelicula> rankingMejoresPuntuadas()
+        {
+            List<Pelicula> lista = new List<Pelicula>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT IdPelicula, Titulo, PromedioCalificacion, URLImagen FROM VW_RankingMejoresPuntuadas");
+
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Pelicula aux = new Pelicula();
+
+                    aux.IdPelicula = (int)datos.Lector["IdPelicula"];
+                    aux.Titulo = datos.Lector["Titulo"].ToString();
+                    aux.PromedioCalificacion = (decimal)datos.Lector["PromedioCalificacion"];
+                    aux.URLImagen = datos.Lector["URLImagen"].ToString();
+
+                    lista.Add(aux);
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+
+            }
+        }
     }
 }
