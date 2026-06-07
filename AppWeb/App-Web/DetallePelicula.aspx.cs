@@ -22,6 +22,15 @@ namespace App_Web
                     cargarPelicula(id);
                 }
             }
+
+            if (Session["Usuario"] != null)
+            {
+                Usuario usuario =
+                    (Usuario)Session["Usuario"];
+
+                btnBajaPelicula.Visible =
+                    usuario.EsAdmin;
+            }
         }
 
         private void cargarPelicula(int id)
@@ -159,6 +168,44 @@ namespace App_Web
             int idPelicula = int.Parse(Request.QueryString["id"]);
 
             Response.Redirect("RegistroResenia.aspx?id=" + idPelicula);
+        }
+
+        protected void btnBajaPelicula_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Session["Usuario"] == null)
+                {
+                    Response.Redirect("Login.aspx");
+                    return;
+                }
+
+                Usuario usuario = (Usuario)Session["Usuario"];
+
+                if (!usuario.EsAdmin)
+                {
+                    lblMensaje.CssClass = "alert alert-warning mt-3 text-center";
+                    lblMensaje.Text = "No tenés permisos para dar de baja películas.";
+                    lblMensaje.Visible = true;
+                    return;
+                }
+
+                int idPelicula = int.Parse(Request.QueryString["id"]);
+
+                PeliculaNegocio negocio = new PeliculaNegocio();
+
+                negocio.bajaLogicaPelicula(idPelicula);
+
+                lblMensaje.CssClass = "alert alert-success mt-3 text-center";
+                lblMensaje.Text = "Película dada de baja correctamente. Las watchlists asociadas fueron actualizadas.";
+                lblMensaje.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                lblMensaje.CssClass = "alert alert-danger mt-3 text-center";
+                lblMensaje.Text = "❌ " + ex.Message;
+                lblMensaje.Visible = true;
+            }
         }
     }
 }

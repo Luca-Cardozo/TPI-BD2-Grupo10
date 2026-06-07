@@ -32,8 +32,9 @@ namespace Negocio
                     "LEFT JOIN PeliculasxActores PA ON PA.IdPelicula = P.IdPelicula " +
                     "LEFT JOIN Actores A ON A.IdActor = PA.IdActor " +
                     "LEFT JOIN PeliculasxGeneros PG ON PG.IdPelicula = P.IdPelicula " +
-                    "LEFT JOIN Generos G ON G.IdGenero = PG.IdGenero"
-                    );
+                    "LEFT JOIN Generos G ON G.IdGenero = PG.IdGenero " +
+                    "WHERE P.Activo = 1"
+                     );
                 datos.ejecutarLectura();
                 while (datos.Lector.Read())
                 {
@@ -317,6 +318,27 @@ namespace Negocio
                 datos.cerrarConexion();
 
             }
+        }
+
+        public void bajaLogicaPelicula(int idPelicula)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE Peliculas SET Activo = 0 WHERE IdPelicula = @IdPelicula");
+                datos.setearParametro("@IdPelicula", idPelicula);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
         }
     }
 }
