@@ -107,7 +107,11 @@
                 <asp:Button ID="btnReproducir" runat="server" Text="▶️ Reproducir" CssClass="btn btn-success" OnClick="btnReproducir_Click" />
 
                 <asp:Button ID="btnWatchlist" runat="server" Text="❤️ Agregar a Watchlist" CssClass="btn btn-primary" OnClick="btnWatchlist_Click" />
-                 <asp:Button ID="btnBajaPelicula"   runat="server"   Text="Dar de baja película"   CssClass="btn btn-outline-danger"  OnClick="btnBajaPelicula_Click" />
+
+
+                 <asp:Button ID="btnBajaPelicula"   runat="server"   Text="Dar de baja película"   CssClass="btn btn-outline-danger"  OnClick="btnBajaPelicula_Click"   OnClientClick="return confirm('¿Deseás dar de baja esta película? También se quitará de las watchlists asociadas.');" />
+               
+                
                 <div class="row mb-4">
                     <asp:Label ID="lblMensaje" runat="server" CssClass="d-block mt-3 text-center fw-bold" />
                 </div>
