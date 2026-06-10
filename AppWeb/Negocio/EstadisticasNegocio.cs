@@ -45,5 +45,47 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public List<HistorialSuscripcion> listarHistorialSuscripciones()
+        {
+            List<HistorialSuscripcion> lista = new List<HistorialSuscripcion>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT IdUsuario, Nombre, Apellido, Email, TipoMembresia," +
+                    "FechaAlta, FechaBaja, EsSuscripcionActiva, EstadoVigencia FROM VW_HistorialSuscripciones");
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    HistorialSuscripcion aux = new HistorialSuscripcion();
+                    aux.IdUsuario = (int)datos.Lector["IdUsuario"];
+                    aux.Nombre = datos.Lector["Nombre"].ToString();
+                    aux.Apellido = datos.Lector["Apellido"].ToString();
+                    aux.Email = datos.Lector["Email"].ToString();
+                    aux.TipoMembresia = datos.Lector["TipoMembresia"].ToString();
+                    aux.FechaAlta = (DateTime)datos.Lector["FechaAlta"];
+
+
+                    if (!(datos.Lector["FechaBaja"] is DBNull))
+                        aux.FechaBaja = (DateTime)datos.Lector["FechaBaja"];
+
+                    aux.EsSuscripcionActiva = (bool)datos.Lector["EsSuscripcionActiva"];
+                    aux.EstadoVigencia = datos.Lector["EstadoVigencia"].ToString();
+
+                    lista.Add(aux);
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
     }
 }

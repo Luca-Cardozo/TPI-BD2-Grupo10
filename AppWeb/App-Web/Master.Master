@@ -70,7 +70,20 @@
                         <li class="nav-item" runat="server" id="liResumenActividadUsuarios">
                             <a class="nav-link" href="ResumenActividadUsuarios.aspx">Ver Resumen Actividad</a>
                         </li>
+                        <li class="nav-item" runat="server" id="liHistorialSuscripciones">
+                            <a class="nav-link" href="HistorialSuscripciones.aspx">Historial Suscripciones</a>
+                        </li>
+
+
                     </ul>
+
+                    <ul class="navbar-nav ms-auto">
+
+    <li class="nav-item">
+        <asp:Label ID="lblUsuarioLogueado" runat="server" CssClass="nav-link fw-bold">  </asp:Label>
+    </li>
+
+</ul>
                 </div>
             </div>
         </nav>
