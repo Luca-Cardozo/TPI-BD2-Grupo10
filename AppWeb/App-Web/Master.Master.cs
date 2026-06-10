@@ -28,6 +28,11 @@ namespace App_Web
             {
                 Usuario usuario = (Usuario)Session["Usuario"];
 
+                if (usuario.EsAdmin)
+                    lblUsuarioLogueado.Text = "🛠️ " + usuario.Nombre;
+                else
+                    lblUsuarioLogueado.Text = "👤 " + usuario.Nombre;
+
                 liWatchlist.Visible = usuario.SuscripcionActual.IdSuscripcion == 3;
                 liResumenActividadUsuarios.Visible = usuario.EsAdmin == true;
                 liHistorialSuscripciones.Visible = usuario.EsAdmin == true;

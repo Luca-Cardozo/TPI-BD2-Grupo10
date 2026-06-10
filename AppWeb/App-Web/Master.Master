@@ -76,6 +76,14 @@
 
 
                     </ul>
+
+                    <ul class="navbar-nav ms-auto">
+
+    <li class="nav-item">
+        <asp:Label ID="lblUsuarioLogueado" runat="server" CssClass="nav-link fw-bold">  </asp:Label>
+    </li>
+
+</ul>
                 </div>
             </div>
         </nav>
