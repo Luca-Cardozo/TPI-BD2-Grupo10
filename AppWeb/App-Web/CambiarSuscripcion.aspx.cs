@@ -70,13 +70,6 @@ namespace App_Web
 
                 Usuario usuario = (Usuario)Session["Usuario"];
 
-                //if (ddlSuscripcion.SelectedValue == "0")
-                //{
-                //    lblMensaje.CssClass = "text-warning d-block mt-3 text-center fw-bold";
-                //    lblMensaje.Text = "⚠ Seleccioná una suscripción.";
-                //    return;
-                //}
-
                 int idNuevaSuscripcion = int.Parse(ddlSuscripcion.SelectedValue);
 
                 UsuarioNegocio negocio = new UsuarioNegocio();
