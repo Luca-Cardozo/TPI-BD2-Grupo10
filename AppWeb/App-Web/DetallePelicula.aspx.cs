@@ -154,16 +154,16 @@ namespace App_Web
 
             Usuario usuario = (Usuario)Session["Usuario"];
 
-            if (usuario.SuscripcionActual.IdSuscripcion != 2 && usuario.SuscripcionActual.IdSuscripcion != 3)
-            {
-                lblMensaje.Visible = true;
+            //if (usuario.SuscripcionActual.IdSuscripcion != 2 && usuario.SuscripcionActual.IdSuscripcion != 3)
+            //{
+            //    lblMensaje.Visible = true;
 
-                lblMensaje.CssClass = "alert alert-warning mt-3 text-center";
+            //    lblMensaje.CssClass = "alert alert-warning mt-3 text-center";
 
-                lblMensaje.Text = "⚠ Necesitás una suscripción Estándar o Premium para dejar reseñas.";
+            //    lblMensaje.Text = "⚠ Necesitás una suscripción Estándar o Premium para dejar reseñas.";
 
-                return;
-            }
+            //    return;
+            //}
 
             int idPelicula = int.Parse(Request.QueryString["id"]);
 
