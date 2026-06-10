@@ -221,7 +221,8 @@ AS
 SELECT TOP 10
     p.IdPelicula,
     p.Titulo,
-    p.PromedioCalificacion
+    p.PromedioCalificacion,
+    p.URLImagen
 FROM Peliculas p
 WHERE p.Activo = 1
 ORDER BY p.PromedioCalificacion DESC;
