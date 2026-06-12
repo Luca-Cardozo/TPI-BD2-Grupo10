@@ -72,6 +72,18 @@ BEGIN
     BEGIN TRANSACTION;
     BEGIN TRY
   
+		IF EXISTS (SELECT 1 FROM Usuarios WHERE DNI = @DNI)
+        BEGIN
+            RAISERROR('El DNI ya se encuentra registrado.', 16, 1)
+            RETURN
+        END
+
+        IF EXISTS (SELECT 1 FROM Usuarios WHERE Email = @Email)
+        BEGIN
+            RAISERROR('El email ya se encuentra registrado.', 16, 1)
+            RETURN
+        END
+
         INSERT INTO Usuarios (Nombre, Apellido, DNI, Email, 
 		Password, Telefono, EsAdmin)
         VALUES (@Nombre, @Apellido, @DNI, @Email, 

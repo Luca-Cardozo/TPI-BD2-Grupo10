@@ -35,6 +35,11 @@ namespace App_Web
 
         protected void btnRegistrarse_Click(object sender, EventArgs e)
         {
+            Page.Validate();
+
+            if (!Page.IsValid)
+                return;
+
             UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
             Usuario nuevoUsuario = new Usuario();
 
