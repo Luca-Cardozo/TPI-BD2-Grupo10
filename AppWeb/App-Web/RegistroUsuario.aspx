@@ -14,6 +14,8 @@
 
                     <div class="card-body p-4">
 
+                        <asp:Label ID="lblMensaje" runat="server" CssClass="alert alert-danger d-none" role="alert"></asp:Label>
+
                         <h2 class="text-center mb-4">Crear cuenta</h2>
 
                         <div class="mb-3">
@@ -28,7 +30,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">DNI</label>
-                            <asp:TextBox ID="txtDNI" runat="server" CssClass="form-control" TextMode="Number" />
+                            <asp:TextBox ID="txtDNI" runat="server" CssClass="form-control" TextMode="SingleLine" />
                         </div>
 
                         <div class="mb-3">
@@ -44,7 +46,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Teléfono</label>
-                            <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" TextMode="Number" />
+                            <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" TextMode="Phone" />
                         </div>
 
                         <div class="mb-4">

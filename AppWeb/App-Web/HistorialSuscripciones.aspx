@@ -30,7 +30,7 @@
 
                                     <span class='<%# Convert.ToBoolean(Eval("EsSuscripcionActiva")) ? "text-success fw-bold" : "text-danger fw-bold" %>'>
                                         <%# Convert.ToBoolean(Eval("EsSuscripcionActiva")) ? "✔ Activa" : "❌ Inactiva" %>
-            </span>
+                                    </span>
                                 </ItemTemplate>
                             </asp:TemplateField>
 

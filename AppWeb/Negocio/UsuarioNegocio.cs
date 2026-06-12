@@ -93,5 +93,46 @@ namespace Negocio
                 datos.cerrarConexion();
             }
         }
+
+        public void registrarUsuario(Usuario nuevo, int idSuscripcion)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+
+                datos.setearProcedimiento("SP_RegistrarUsuario");
+
+
+                datos.setearParametro("@Nombre", nuevo.Nombre);
+                datos.setearParametro("@Apellido", nuevo.Apellido);
+                datos.setearParametro("@DNI", nuevo.DNI);
+                datos.setearParametro("@Email", nuevo.Email);
+                datos.setearParametro("@Password", nuevo.Password);
+                if (string.IsNullOrEmpty(nuevo.Telefono))
+                {
+
+                    datos.setearParametro("@Telefono", DBNull.Value);
+                }
+                else
+                {
+
+                    datos.setearParametro("@Telefono", nuevo.Telefono);
+                }
+                datos.setearParametro("@IdSuscripcion", idSuscripcion);
+
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
 }

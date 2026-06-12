@@ -35,7 +35,61 @@ namespace App_Web
 
         protected void btnRegistrarse_Click(object sender, EventArgs e)
         {
+            UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+            Usuario nuevoUsuario = new Usuario();
 
+            try
+            {
+
+                if (ddlSuscripcion.SelectedValue == "0")
+                {
+                    lblMensaje.Text = "⚠️ Por favor, seleccione un tipo de suscripción.";
+                    lblMensaje.CssClass = "alert alert-warning d-block";
+                    return;
+                }
+                if (contieneNumeros(txtNombre.Text) || contieneNumeros(txtApellido.Text))
+                {
+                    lblMensaje.Text = "⚠️ El nombre y apellido no pueden contener números.";
+                    lblMensaje.CssClass = "alert alert-warning d-block";
+                    return;
+                }
+
+                nuevoUsuario.Nombre = txtNombre.Text.Trim();
+                nuevoUsuario.Apellido = txtApellido.Text.Trim();
+                nuevoUsuario.DNI = txtDNI.Text.Trim();
+                nuevoUsuario.Email = txtEmail.Text.Trim();
+                nuevoUsuario.Password = txtPassword.Text.Trim();
+                nuevoUsuario.Telefono = txtTelefono.Text.Trim();
+
+                int idSuscripcionSeleccionada = Convert.ToInt32(ddlSuscripcion.SelectedValue);
+
+
+                usuarioNegocio.registrarUsuario(nuevoUsuario, idSuscripcionSeleccionada);
+
+                nuevoUsuario.SuscripcionActual = new Suscripcion();
+                nuevoUsuario.SuscripcionActual.IdSuscripcion = idSuscripcionSeleccionada;
+
+
+                nuevoUsuario.EsAdmin = false;
+
+
+                Session["Usuario"] = nuevoUsuario;
+
+
+                Response.Redirect("Home.aspx", false);
+            }
+            catch (Exception ex)
+            {
+                lblMensaje.Text = "❌ Error al registrar el usuario: " + ex.Message;
+                lblMensaje.CssClass = "alert alert-danger d-block";
+            }
+
+
+        }
+
+        private bool contieneNumeros(string texto)
+        {
+            return texto.Any(char.IsDigit);
         }
     }
 }
