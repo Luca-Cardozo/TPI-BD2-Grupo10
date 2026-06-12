@@ -84,24 +84,17 @@ BEGIN
             RETURN
         END
 
-        INSERT INTO Usuarios (Nombre, Apellido, DNI, Email, 
-		Password, Telefono, EsAdmin)
-        VALUES (@Nombre, @Apellido, @DNI, @Email, 
-		@Password, @Telefono, 0);
+        INSERT INTO Usuarios (Nombre, Apellido, DNI, Email,	Password, Telefono, EsAdmin)
+        VALUES (@Nombre, @Apellido, @DNI, @Email, @Password, @Telefono, 0);
        
         DECLARE @NuevoIdUsuario INT;
         
-        SELECT @NuevoIdUsuario = IdUsuario 
-        FROM Usuarios 
-        WHERE DNI = @DNI;
+        SELECT @NuevoIdUsuario = IdUsuario FROM Usuarios WHERE DNI = @DNI;
        
-        INSERT INTO UsuariosxSuscripciones (IdUsuario, IdSuscripcion, 
-		FechaAlta, FechaBaja, Activo)
+        INSERT INTO UsuariosxSuscripciones (IdUsuario, IdSuscripcion, FechaAlta, FechaBaja, Activo)
         VALUES (@NuevoIdUsuario, @IdSuscripcion, GETDATE(), NULL, 1);
         
-        COMMIT TRANSACTION;
-        PRINT 'Usuario y suscripción registrados correctamente.';
-        
+        COMMIT TRANSACTION;        
     END TRY
     BEGIN CATCH
         ROLLBACK TRANSACTION;
